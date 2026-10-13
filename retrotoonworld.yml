@@ -12,6 +12,7 @@ links:
 
 caps:
   categorymappings:
+    # id = RetroToon internal category id (torrents.category) -> Torznab category
     - {id: 1,  cat: TV,            desc: "Retro Cartoons"}
     - {id: 2,  cat: TV,            desc: "Modern Cartoons"}
     - {id: 3,  cat: Movies,        desc: "Animated Feature"}
@@ -63,6 +64,7 @@ settings:
       asc: asc
 
 login:
+  # Connectivity/key test — a valid passkey returns 200 JSON, an invalid one 401.
   path: api/torrents/filter.php
   method: get
   inputs:
@@ -136,6 +138,8 @@ search:
     grabs:
       selector: times_completed
     date:
+      # UNIT3D returns ISO "2025-08-04T00:34:50.000000Z"; Prowlarr's JSON layer
+      # reserializes it to "MM/dd/yyyy HH:mm:ss" before these filters run.
       selector: created_at
       filters:
         - name: append
@@ -145,6 +149,7 @@ search:
     size:
       selector: size
     downloadvolumefactor:
+      # api returns 0%, 25%, 50%, 75%, 100%
       selector: freeleech
       case:
         0%: 1
@@ -154,10 +159,9 @@ search:
         100%: 0
         "*": 1
     uploadvolumefactor:
-      selector: double_upload
-      case:
-        False: 1
-        True: 2
+      # RetroToon-specific field: exact factor (1, 2, 3, or 0 for Neutral)
+      selector: upload_factor
     minimumseedtime:
+      # 7 days
       text: 604800
 # json-schema-version: v11
