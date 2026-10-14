@@ -138,7 +138,6 @@ search:
     grabs:
       selector: times_completed
     date:
-      # UNIT3D returns ISO "2025-08-04T00:34:50.000000Z"; Prowlarr's JSON layer
       # reserializes it to "MM/dd/yyyy HH:mm:ss" before these filters run.
       selector: created_at
       filters:
